@@ -9,6 +9,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginAppState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  String email = "";
+  String password = "";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,6 +38,14 @@ class LoginAppState extends State<LoginScreen> {
         labelText: "Email",
         hintText: "h@in.com",
       ),
+      validator: (String value) {
+        if (!value.contains('@')) {
+          return "Please enter a valid email";
+        }
+      },
+      onSaved: (value) {
+        email = value;
+      },
     );
   }
 
@@ -46,6 +56,14 @@ class LoginAppState extends State<LoginScreen> {
         labelText: "Password",
         hintText: "password",
       ),
+      validator: (String value) {
+        if (value.length < 4) {
+          return "Password cannot be less then 6 chars";
+        }
+      },
+      onSaved: (value) {
+        password = value;
+      },
     );
   }
 
@@ -55,10 +73,10 @@ class LoginAppState extends State<LoginScreen> {
       child: Text("Login"),
       textColor: Colors.white,
       onPressed: () {
-        validate();
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+        }
       },
     );
   }
 }
-
-void validate() {}
